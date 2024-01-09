@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @TeleOp(name = "TeleOpMode", group = "Concept")
-@Disabled
 public class TeleOpMode extends LinearOpMode {
     FieldCentric driver;
     IntakeOuttake in_out_take;
