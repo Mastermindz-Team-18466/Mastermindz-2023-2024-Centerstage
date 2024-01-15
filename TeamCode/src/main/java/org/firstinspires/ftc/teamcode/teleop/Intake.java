@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Intake {
-    private static DcMotorEx intakeMotor;
-    private static Servo dropdown;
+    public static DcMotorEx intakeMotor;
+    public static Servo dropdown;
     public static final double intakeSpeed = 1;
     public static final double outtakeSpeed = -1;
     public static final double dropdown_up_position = 0;

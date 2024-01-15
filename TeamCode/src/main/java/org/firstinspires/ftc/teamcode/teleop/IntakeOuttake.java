@@ -1,9 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import android.widget.GridLayout;
-
-import com.vuforia.VIDEO_BACKGROUND_REFLECTION;
-
 public class IntakeOuttake {
     Claw claw;
     DepositHorizontalSlides deposit_horizontal_slides;
@@ -155,7 +151,7 @@ public class IntakeOuttake {
             case DEPOSIT:
                 switch (specificInstruction) {
                     case EXTEND_VERTICAL:
-                        VerticalSlides.go_to_high();
+                        VerticalSlides.go_to_low();
                         reset(SpecificInstructions.EXTEND_DEPOSIT_HORIZONTAL);
                         break;
                     case EXTEND_DEPOSIT_HORIZONTAL:

@@ -6,16 +6,21 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "SetServo", group = "Concept")
+@TeleOp(name = "DepoHorizTest", group = "Concept")
 @Config
-public class SetServo extends LinearOpMode {
-    public static double start_position = 0;
-    public static double end_position = 0;
-    public Servo servo;
+public class DepoHorizTest extends LinearOpMode {
+    public static double left_start = 0;
+    public static double left_end = 0;
+    public static double right_start = 0;
+    public static double right_end = 0;
+    public Servo left_depo_horiz, right_depo_horiz;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        servo = hardwareMap.get(Servo.class, "servo_test");
+        left_depo_horiz = hardwareMap.get(Servo.class, "left_deposit_horizontal");
+        right_depo_horiz = hardwareMap.get(Servo.class, "right_deposit_horizontal");
+
+        left_depo_horiz.setDirection(Servo.Direction.REVERSE);
 
         waitForStart();
 
@@ -33,11 +38,13 @@ public class SetServo extends LinearOpMode {
             currentGamepad2.copy(gamepad2);
 
             if (currentGamepad1.a && !previousGamepad1.a) {
-                servo.setPosition(start_position);
+                left_depo_horiz.setPosition(left_start);
+                right_depo_horiz.setPosition(right_start);
             }
 
             else if (currentGamepad1.b && !previousGamepad1.b) {
-                servo.setPosition(end_position);
+                left_depo_horiz.setPosition(left_end);
+                right_depo_horiz.setPosition(right_end);
             }
         }
     }

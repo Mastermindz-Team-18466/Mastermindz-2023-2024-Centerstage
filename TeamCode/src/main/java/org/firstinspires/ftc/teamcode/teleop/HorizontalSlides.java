@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class HorizontalSlides {
-    private static PIDController controller;
-    private static final double p = 0, i = 0, d = 0;
-    private static final double f = 0;
-    private static final int extendedBound = 0;
-    private static final int retractedBound = 0;
+    public static PIDController controller;
+    public static final double p = 0.1, i = 0, d = 0.001;
+    public static final double f = 0.00004;
+    public static final int extendedBound = -900;
+    public static final int retractedBound = 15;
 
     public static DcMotorEx leftHorizontalSlides;
     public static DcMotorEx rightHorizontalSlides;
@@ -23,10 +23,10 @@ public class HorizontalSlides {
     }
 
     public static void set() {
-        if (current_position >= extendedBound) {
+        if (current_position <= extendedBound) {
             current_position = extendedBound;
         }
-        if (current_position <= retractedBound) {
+        if (current_position >= retractedBound) {
             current_position = retractedBound;
         }
 

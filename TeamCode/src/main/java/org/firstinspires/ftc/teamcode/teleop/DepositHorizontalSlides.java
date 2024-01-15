@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class DepositHorizontalSlides {
     public static Servo left_deposit_horizontal_slides;
     public static Servo right_deposit_horizontal_slides;
-    public static final double deposit_position = 0;
-    public static final double intake_position = 0;
+    public static final double deposit_position = 0.4;
+    public static final double intake_position = 0.7;
     static final double INCREMENT = 0.01;
     static final int CYCLE_MS = 50;
     public double TURNING_POINT = 0.85;
@@ -24,12 +24,12 @@ public class DepositHorizontalSlides {
     public static void set() {
         double position = left_deposit_horizontal_slides.getPosition();
 
-        if (System.currentTimeMillis() - previous_action > 50) {
+        if (System.currentTimeMillis() - previous_action > CYCLE_MS) {
             previous_action = System.currentTimeMillis();
             if (position < current_position - 0.05) {
-                position += 0.01;
+                position += INCREMENT;
             } else if (position > current_position + 0.05) {
-                position -= 0.01;
+                position -= INCREMENT;
             } else {
                 position = current_position;
             }

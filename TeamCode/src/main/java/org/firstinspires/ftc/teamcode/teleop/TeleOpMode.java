@@ -61,7 +61,25 @@ public class TeleOpMode extends LinearOpMode {
             previousGamepad2.copy(currentGamepad2);
             currentGamepad2.copy(gamepad2);
 
-            // add buttons
+            if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) {
+                // Intake
+            }
+
+            if (currentGamepad2.right_bumper && !previousGamepad2.right_bumper) {
+                // Outtake
+            }
+
+            if (currentGamepad2.right_trigger > 0.5 && !(previousGamepad2.right_trigger > 0.5)) {
+                // Open both
+            }
+
+            if (currentGamepad2.dpad_left && !previousGamepad2.dpad_left) {
+                // Left claw open
+            }
+
+            if (currentGamepad2.dpad_right && !previousGamepad2.dpad_right) {
+                // Right claw open
+            }
 
             // telemetry
             telemetry.update();
