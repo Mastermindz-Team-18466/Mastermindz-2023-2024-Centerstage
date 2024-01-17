@@ -123,6 +123,11 @@ public class TeleOpMode extends LinearOpMode {
             if (currentGamepad1.y && !previousGamepad1.y) {
                 dropdown.setPosition(down);
             }
+
+            left_horizontal.setPower(currentGamepad1.left_stick_y);
+            right_horizontal.setPower(currentGamepad1.left_stick_y);
+
+            vertical.setPower(currentGamepad1.right_stick_x);
         }
     }
 }
