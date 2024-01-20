@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.teleop.Claw;
 import org.firstinspires.ftc.teamcode.teleop.DepositHorizontalSlides;
+import org.firstinspires.ftc.teamcode.teleop.Intake;
 
 @TeleOp(name = "TeleTest", group = "Concept")
 @Config
@@ -30,6 +31,9 @@ public class TeleOpMode extends LinearOpMode {
 
     public static double down = 0;
     public static double up = 0.5;
+
+    public static double left_intake = 0.08;
+    public static double right_intake = 0.08;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -75,18 +79,18 @@ public class TeleOpMode extends LinearOpMode {
             currentGamepad2.copy(gamepad2);
 
             if (currentGamepad1.a && !previousGamepad1.a) {
-                left_claw.setPosition(Claw.claw_open_position);
-                right_claw.setPosition(Claw.claw_open_position);
+                left_claw.setPosition(Claw.left_claw_open_position);
+                right_claw.setPosition(Claw.right_claw_open_position);
             }
 
             if (currentGamepad1.b && !previousGamepad1.b) {
-                left_claw.setPosition(Claw.claw_close_position);
-                right_claw.setPosition(Claw.claw_close_position);
+                left_claw.setPosition(Claw.left_claw_close_position);
+                right_claw.setPosition(Claw.right_claw_close_position);
             }
 
             if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left) {
-                left_deposit_horizontal.setPosition(DepositHorizontalSlides.intake_position);
-                right_deposit_horizontal.setPosition(DepositHorizontalSlides.intake_position);
+                left_deposit_horizontal.setPosition(DepositHorizontalSlides.left_intake_position);
+                right_deposit_horizontal.setPosition(DepositHorizontalSlides.right_intake_position);
             }
 
             if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right) {
@@ -95,8 +99,8 @@ public class TeleOpMode extends LinearOpMode {
             }
 
             if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
-                left_claw_tilt.setPosition(Claw.claw_tilt_intake);
-                right_claw_tilt.setPosition(Claw.claw_tilt_intake);
+                left_claw_tilt.setPosition(Claw.left_claw_tilt_intake);
+                right_claw_tilt.setPosition(Claw.right_claw_tilt_intake);
             }
 
             if (currentGamepad1.dpad_down && !previousGamepad1.dpad_down) {
@@ -105,7 +109,7 @@ public class TeleOpMode extends LinearOpMode {
             }
 
             if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
-                intake.setPower(1);
+                intake.setPower(Intake.intakeSpeed);
             }
 
             if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
@@ -113,15 +117,15 @@ public class TeleOpMode extends LinearOpMode {
             }
 
             if (currentGamepad1.right_trigger > 0.5 && !(previousGamepad1.right_trigger > 0.5)) {
-                intake.setPower(-currentGamepad1.right_trigger);
+                intake.setPower(Intake.outtakeSpeed);
             }
 
             if (currentGamepad1.x && !previousGamepad1.x) {
-                dropdown.setPosition(up);
+                dropdown.setPosition(Intake.dropdown_up_position);
             }
 
             if (currentGamepad1.y && !previousGamepad1.y) {
-                dropdown.setPosition(down);
+                dropdown.setPosition(Intake.dropdown_down_position);
             }
 
             left_horizontal.setPower(currentGamepad1.left_stick_y);

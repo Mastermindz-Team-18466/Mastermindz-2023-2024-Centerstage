@@ -8,11 +8,14 @@ public class Claw {
     public static Servo right_claw;
     public static Servo left_claw_tilt;
     public static Servo right_claw_tilt;
-    public static final double claw_open_position = 0.5;
-    public static final double claw_close_position = 0;
-    public static final double claw_tilt_intake = 0;
-    public static final double left_claw_tilt_deposit = 0.2;
-    public static final double right_claw_tilt_deposit = 0.32;
+    public static final double left_claw_open_position = 0.45;
+    public static final double left_claw_close_position = 0;
+    public static final double right_claw_open_position = 0.8;
+    public static final double right_claw_close_position = 0.22;
+    public static final double left_claw_tilt_intake = 0.12;
+    public static final double right_claw_tilt_intake = 0.12;
+    public static final double left_claw_tilt_deposit = 0.34;
+    public static final double right_claw_tilt_deposit = 0.43;
     public static double left_claw_position;
     public static double right_claw_position;
     public static double left_claw_tilt_position;
@@ -29,24 +32,24 @@ public class Claw {
     }
 
     public static void open_left_claw() {
-        left_claw_position = claw_open_position;
+        left_claw_position = left_claw_open_position;
     }
 
     public static void close_left_claw() {
-        left_claw_position = claw_close_position;
+        left_claw_position = left_claw_close_position;
     }
 
     public static void open_right_claw() {
-        right_claw_position = claw_open_position;
+        right_claw_position = right_claw_open_position;
     }
 
     public static void close_right_claw() {
-        right_claw_position = claw_close_position;
+        right_claw_position = right_claw_close_position;
     }
 
     public static void intake_tilt() {
-        left_claw_tilt_position = claw_tilt_intake;
-        right_claw_tilt_position = claw_tilt_intake;
+        left_claw_tilt_position = left_claw_tilt_intake;
+        right_claw_tilt_position = right_claw_tilt_intake;
     }
 
     public static void deposit_tilt() {
