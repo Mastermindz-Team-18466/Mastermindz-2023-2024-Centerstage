@@ -70,7 +70,9 @@ public class SampleMecanumDrive extends MecanumDrive {
     private final TrajectoryFollower follower;
 
     public double slowMode = 1;
+    public static double strafeMode = 2.5;
     public boolean autoCheck = false;
+    public boolean strafeCheck = false;
     double multiplier = 1;
 
     public final DcMotorEx leftFront;
@@ -320,21 +322,16 @@ public class SampleMecanumDrive extends MecanumDrive {
         System.out.println(leftFront.getPower() + " " + leftRear.getPower() + " " + rightFront.getPower() + " " + rightRear.getPower());
 
 
-        if (autoCheck == true) {
-            int occurences = 0;
 
-            for (int i = 0; i < 4; i++) {
-                if (powers.get(i) > Math.ulp(1.0)) {
-                    occurences++;
-                }
-            }
-
-            multiplier = (-1 * Math.pow(occurences, 2)) / 4 + occurences + 1;
-        }
 
         leftFront.setPower(v / (slowMode * multiplier));
-        leftRear.setPower(v1 / (slowMode * multiplier));
-        rightRear.setPower(v2 / (slowMode * multiplier));
+        if (strafeCheck){
+            leftRear.setPower(v1 / (strafeMode * (slowMode * multiplier)));
+            rightRear.setPower(v2 / (strafeMode * (slowMode * multiplier)));
+        } else {
+            leftRear.setPower(v1 / (slowMode * multiplier));
+            rightRear.setPower(v2 / (slowMode * multiplier));
+        }
         rightFront.setPower(v3 / (slowMode * multiplier));
     }
 

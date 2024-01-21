@@ -11,7 +11,7 @@ public class IntakeOuttake {
     public SpecificInstructions specificInstruction;
     public SpecificInstructions previousSpecificInstruction;
     private long previous_action = System.currentTimeMillis();
-    private double waitTime = 0;
+    private double waitTime = 1000;
 
     public IntakeOuttake(Sensors sensors, Claw claw, DepositHorizontalSlides deposit_horizontal_slides, HorizontalSlides horizontal_slides, Intake intake, VerticalSlides vertical_slides) {
         this.sensors = sensors;

@@ -40,11 +40,17 @@ public class FieldCentric {
     }
 
     public void move() {
+        if (Math.abs(gamepad.left_stick_x) >= 0.5){
+            drive.strafeCheck = true;
+        } else{
+            drive.strafeCheck = false;
+        }
+
         drive.setWeightedDrivePower(
                 new Pose2d(
                         -gamepad.left_stick_y,
                         -gamepad.left_stick_x,
-                        -3 * gamepad.right_stick_x
+                        -gamepad.right_stick_x
                 )
         );
 

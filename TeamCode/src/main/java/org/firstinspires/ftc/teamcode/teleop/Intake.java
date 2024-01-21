@@ -11,7 +11,7 @@ public class Intake {
     public static Servo dropdown;
     public static final double intakeSpeed = 1;
     public static final double outtakeSpeed = -1;
-    public static final double dropdown_up_position = 0.3;
+    public static final double dropdown_up_position = 0.35;
     public static final double dropdown_down_position = 0;
     public static double intake_current_speed;
     public static double dropdown_current_position;

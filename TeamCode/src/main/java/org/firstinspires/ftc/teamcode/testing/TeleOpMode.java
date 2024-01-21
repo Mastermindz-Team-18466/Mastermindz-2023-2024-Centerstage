@@ -8,13 +8,18 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.teleop.Claw;
 import org.firstinspires.ftc.teamcode.teleop.DepositHorizontalSlides;
+import org.firstinspires.ftc.teamcode.teleop.FieldCentric;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
+import org.firstinspires.ftc.teamcode.teleop.IntakeOuttake;
 
 @TeleOp(name = "TeleTest", group = "Concept")
 @Config
 public class TeleOpMode extends LinearOpMode {
+    FieldCentric driver;
+
     public static double start_position = 0;
     public static double end_position = 0;
     public Servo left_claw;
@@ -37,6 +42,8 @@ public class TeleOpMode extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        driver = new FieldCentric(hardwareMap, new SampleMecanumDrive(hardwareMap), gamepad2);
+
         left_claw = hardwareMap.get(Servo.class, "left_claw");
         right_claw = hardwareMap.get(Servo.class, "right_claw");
 
@@ -72,6 +79,7 @@ public class TeleOpMode extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+
             previousGamepad1.copy(currentGamepad1);
             currentGamepad1.copy(gamepad1);
 
@@ -132,6 +140,7 @@ public class TeleOpMode extends LinearOpMode {
             right_horizontal.setPower(currentGamepad1.left_stick_y);
 
             vertical.setPower(currentGamepad1.right_stick_x);
+            driver.move();
         }
     }
 }
