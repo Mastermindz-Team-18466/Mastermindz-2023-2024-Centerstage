@@ -43,10 +43,16 @@ public class IntakeOuttake {
         switch (instruction) {
             case CLOSED:
                 switch (specificInstruction) {
+                    case EXTEND_VERTICAL:
+                        VerticalSlides.go_to_low();
+                        reset(SpecificInstructions.CLOSE_CLAWS);
+                        break;
                     case CLOSE_CLAWS:
-                        Claw.close_left_claw();
-                        Claw.close_right_claw();
-                        reset(SpecificInstructions.RETRACT_DEPOSIT_HORIZONTAL);
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            Claw.close_left_claw();
+                            Claw.close_right_claw();
+                            reset(SpecificInstructions.RETRACT_DEPOSIT_HORIZONTAL);
+                        }
                         break;
                     case RETRACT_DEPOSIT_HORIZONTAL:
                         if (System.currentTimeMillis() - previous_action > waitTime) {

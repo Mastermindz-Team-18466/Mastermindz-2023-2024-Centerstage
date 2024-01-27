@@ -35,7 +35,7 @@ public class TeleOpMode extends LinearOpMode {
         in_out_take = new IntakeOuttake(sensors, claw, deposit_horizontal_slides, horizontal_slides, intake, vertical_slides);
 
        in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
-       in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.CLOSE_CLAWS);
+       in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
 
         Gamepad currentGamepad1 = new Gamepad();
         Gamepad currentGamepad2 = new Gamepad();
@@ -68,7 +68,7 @@ public class TeleOpMode extends LinearOpMode {
 
             if (currentGamepad2.right_trigger > 0.5 && !(previousGamepad2.right_trigger > 0.5)) {
                 in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
-                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.CLOSE_CLAWS);
+                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
             }
 
             if (currentGamepad2.b && !previousGamepad2.b) {
