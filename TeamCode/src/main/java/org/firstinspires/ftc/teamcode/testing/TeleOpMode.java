@@ -39,6 +39,8 @@ public class TeleOpMode extends LinearOpMode {
 
     public static double left_intake = 0.08;
     public static double right_intake = 0.08;
+    public static double left_claw_i = 0;
+    public static double right_claw_i = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {

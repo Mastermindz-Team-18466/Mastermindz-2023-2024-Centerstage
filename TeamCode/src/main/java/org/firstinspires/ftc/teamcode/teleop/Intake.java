@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -11,14 +12,19 @@ public class Intake {
     public static Servo dropdown;
     public static final double intakeSpeed = 1;
     public static final double outtakeSpeed = -1;
-    public static final double dropdown_up_position = 0.35;
-    public static final double dropdown_down_position = 0;
-    public static double intake_current_speed;
-    public static double dropdown_current_position;
+    public static final double dropdown_up_position = 0.5;
+    public static final double dropdown_down_position = 0.25;
+    public static double intake_current_speed = 0;
+    public static double dropdown_current_position = 0.1;
 
     public Intake(HardwareMap hardwareMap) {
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intake_motor");
         dropdown = hardwareMap.get(Servo.class, "dropdown");
+
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        intake_current_speed = intakeMotor.getPower();
+        dropdown_current_position = dropdown.getPosition();
     }
     public static void stop() {
         intake_current_speed = 0;

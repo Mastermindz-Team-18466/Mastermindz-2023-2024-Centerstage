@@ -9,8 +9,8 @@ public class VerticalSlides {
     private static final double p = 0.04, i = 0, d = 0.0001;
     private static final double f = 0.00004;
     private static final int extendedBound = -2700;
-    private static final int retractedBound = -50;
-    private static final double ground_position = -50;
+    private static final int retractedBound = 0;
+    private static final double ground_position = 0;
     private static final double low_position = -800;
     private static final double medium_position = -1600;
     private static final double high_position = -2700;
@@ -21,6 +21,8 @@ public class VerticalSlides {
         controller = new PIDController(p, i, d);
 
         verticalSlides = hardwareMap.get(DcMotorEx.class, "vertical");
+
+        current_position = verticalSlides.getCurrentPosition();
     }
 
     public static void set() {
@@ -32,9 +34,9 @@ public class VerticalSlides {
         }
 
         controller.setPID(p, i, d);
-        double current_position = verticalSlides.getCurrentPosition();
+        double vertical_current_position = verticalSlides.getCurrentPosition();
 
-        double pid = controller.calculate(current_position, current_position);
+        double pid = controller.calculate(vertical_current_position, current_position);
 
         double power = pid + f;
 

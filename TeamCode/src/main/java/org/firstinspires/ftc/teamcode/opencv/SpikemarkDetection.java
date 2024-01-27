@@ -36,7 +36,10 @@ public class SpikemarkDetection implements VisionProcessor {
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
-        Imgproc.cvtColor(frame, frame, Imgproc.COLOR_RGB2BGR);
+        double[] hsvThresholdHue = {0, 117};
+        double[] hsvThresholdSaturation = {210, 255.0};
+        double[] hsvThresholdValue = {0, 116};
+        hsvThreshold(frame, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, frame);
 
         Mat matLeft = frame.submat(0, 240, 0, 106);
         Mat matCenter = frame.submat(0, 240, 106, 213);
@@ -50,17 +53,17 @@ public class SpikemarkDetection implements VisionProcessor {
         double centerTotal = Core.sumElems(matCenter).val[0];
         double rightTotal = Core.sumElems(matRight).val[0];
 
-        if (leftTotal < centerTotal && leftTotal < rightTotal) {
+        if (leftTotal > centerTotal && leftTotal > rightTotal) {
             position = SpikemarkPosition.ONE;
             telemetry.addData("Position", "ONE");
         }
 
-        else if (centerTotal < rightTotal && centerTotal < leftTotal) {
+        else if (centerTotal > rightTotal && centerTotal > leftTotal) {
             position = SpikemarkPosition.TWO;
             telemetry.addData("Position", "TWO");
         }
 
-        else if (rightTotal < centerTotal && rightTotal < leftTotal) {
+        else if (rightTotal > centerTotal && rightTotal > leftTotal) {
             position = SpikemarkPosition.THREE;
             telemetry.addData("Position", "THREE");
         }
@@ -80,6 +83,12 @@ public class SpikemarkDetection implements VisionProcessor {
 
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
+    }
+    private void hsvThreshold(Mat input, double[] hue, double[] sat, double[] val,
+                              Mat out) {
+        Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HSV);
+        Core.inRange(out, new Scalar(hue[0], sat[0], val[0]),
+                new Scalar(hue[1], sat[1], val[1]), out);
     }
 
 }

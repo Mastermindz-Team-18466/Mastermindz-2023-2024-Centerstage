@@ -13,13 +13,16 @@ public class DepositHorizontalSlides {
     static final int CYCLE_MS = 50;
     public double TURNING_POINT = 0.85;
     static double previous_action = System.currentTimeMillis();
-    public static double left_current_position, right_current_position;
+    public static double left_current_position = 0.7, right_current_position = 0.75;
 
     public DepositHorizontalSlides(HardwareMap hardwareMap) {
         left_deposit_horizontal_slides = hardwareMap.get(Servo.class, "left_deposit_horizontal");
         right_deposit_horizontal_slides = hardwareMap.get(Servo.class, "right_deposit_horizontal");
 
-        right_deposit_horizontal_slides.setDirection(Servo.Direction.REVERSE);
+        left_deposit_horizontal_slides.setDirection(Servo.Direction.REVERSE);
+
+        left_current_position = left_deposit_horizontal_slides.getPosition();
+        right_current_position = right_deposit_horizontal_slides.getPosition();
     }
 
     public static void set() {

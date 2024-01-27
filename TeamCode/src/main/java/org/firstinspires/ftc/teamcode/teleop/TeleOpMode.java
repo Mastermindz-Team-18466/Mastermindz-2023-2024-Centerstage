@@ -34,8 +34,8 @@ public class TeleOpMode extends LinearOpMode {
 
         in_out_take = new IntakeOuttake(sensors, claw, deposit_horizontal_slides, horizontal_slides, intake, vertical_slides);
 
-//        in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
-//        in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.CLOSED);
+       in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
+       in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.CLOSE_CLAWS);
 
         Gamepad currentGamepad1 = new Gamepad();
         Gamepad currentGamepad2 = new Gamepad();
@@ -61,39 +61,29 @@ public class TeleOpMode extends LinearOpMode {
             previousGamepad2.copy(currentGamepad2);
             currentGamepad2.copy(gamepad2);
 
-            if (currentGamepad2.left_bumper) {
-                Intake.intakeMotor.setPower(Intake.intakeSpeed);
-            } else if (currentGamepad1.right_bumper){
-                Intake.intakeMotor.setPower(-Intake.intakeSpeed);
-            } else {
-                Intake.intakeMotor.setPower(0);
+            if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) {
+                in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED_INTAKE);
+                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.DROPDOWN_DOWN);
             }
 
             if (currentGamepad2.right_trigger > 0.5 && !(previousGamepad2.right_trigger > 0.5)) {
-                // Open both
+                in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
+                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.CLOSE_CLAWS);
             }
 
-            if (currentGamepad2.dpad_left && !previousGamepad2.dpad_left) {
-                // Left claw open
-            }
-
-            if (currentGamepad2.dpad_right && !previousGamepad2.dpad_right) {
-                // Right claw open
+            if (currentGamepad2.b && !previousGamepad2.b) {
+                in_out_take.claw.open_left_claw();
+                in_out_take.claw.open_right_claw();
             }
 
             if (currentGamepad2.left_trigger > 0.5 && !(previousGamepad2.left_trigger > 0.5)) {
                 in_out_take.setInstructions(IntakeOuttake.Instructions.DEPOSIT);
-                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
+                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.CLOSE_CLAWS);
             }
 
             if(currentGamepad2.a && !previousGamepad2.a) {
-                Claw.close_left_claw();
-                Claw.close_right_claw();
-            }
-
-            if(currentGamepad2.b && !previousGamepad2.b) {
-                Claw.intake_tilt();
-                Claw.intake_tilt();
+                in_out_take.claw.close_left_claw();
+                in_out_take.claw.close_right_claw();
             }
 
             // telemetry

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import android.widget.GridLayout;
+
 public class IntakeOuttake {
     Claw claw;
     DepositHorizontalSlides deposit_horizontal_slides;
@@ -27,7 +29,7 @@ public class IntakeOuttake {
 
     public void reset(SpecificInstructions next) {
         previous_action = System.currentTimeMillis();
-        waitTime = specificInstruction.time()   ;
+        waitTime = specificInstruction.time();
         specificInstruction = next;
     }
 
@@ -55,6 +57,13 @@ public class IntakeOuttake {
                     case TILT_CLAWS:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
                             Claw.intake_tilt();
+                            reset(SpecificInstructions.OPEN_CLAWS);
+                        }
+                        break;
+                    case OPEN_CLAWS:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            Claw.open_left_claw();
+                            Claw.open_right_claw();
                             reset(SpecificInstructions.STOP_ROLLERS);
                         }
                         break;
@@ -66,7 +75,7 @@ public class IntakeOuttake {
                         break;
                     case RETRACT_HORIZONTAL:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
-                            HorizontalSlides.extend();
+                            HorizontalSlides.retract();
                             reset(SpecificInstructions.RETRACT_VERTICAL);
                         }
                         break;
@@ -80,20 +89,13 @@ public class IntakeOuttake {
 
             case CLOSED_INTAKE:
                 switch (specificInstruction) {
+                    case DROPDOWN_DOWN:
+                        intake.dropdown_up();
+                        reset(SpecificInstructions.SPIN_ROLLERS);
+                        break;
                     case SPIN_ROLLERS:
-                        Intake.intake();
-                        reset(SpecificInstructions.REVERSE_ROLLERS);
-                        break;
-                    case REVERSE_ROLLERS:
-                        if (Sensors.get_left_pixel_sensor_distance() < 0.75 && Sensors.get_right_pixel_sensor_distance() < 0.75) {
-                            Intake.outtake();
-                            reset(2, SpecificInstructions.CLOSE_CLAWS);
-                        }
-                        break;
-                    case CLOSE_CLAWS:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
-                            Claw.close_right_claw();
-                            Claw.close_left_claw();
+                            intake.intake();
                         }
                         break;
                 }
@@ -103,30 +105,17 @@ public class IntakeOuttake {
                 switch (specificInstruction) {
                     case EXTEND_HORIZONTAL:
                         HorizontalSlides.extend();
-                        reset(SpecificInstructions.SPIN_ROLLERS);
+                        reset(SpecificInstructions.DROPDOWN_DOWN);
+                        break;
+                    case DROPDOWN_DOWN:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            Intake.dropdown_up();
+                            reset(SpecificInstructions.SPIN_ROLLERS);
+                        }
                         break;
                     case SPIN_ROLLERS:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
                             Intake.intake();
-                            reset(SpecificInstructions.REVERSE_ROLLERS);
-                        }
-                        break;
-                    case REVERSE_ROLLERS:
-                        if (Sensors.get_left_pixel_sensor_distance() < 0.75 && Sensors.get_right_pixel_sensor_distance() < 0.75) {
-                            Intake.outtake();
-                            reset(2, SpecificInstructions.RETRACT_HORIZONTAL);
-                        }
-                        break;
-                    case RETRACT_HORIZONTAL:
-                        if (System.currentTimeMillis() - previous_action > waitTime) {
-                            HorizontalSlides.retract();
-                            reset(SpecificInstructions.CLOSE_CLAWS);
-                        }
-                        break;
-                    case CLOSE_CLAWS:
-                        if (System.currentTimeMillis() - previous_action > waitTime) {
-                            Claw.close_right_claw();
-                            Claw.close_left_claw();
                         }
                         break;
                 }
@@ -150,31 +139,38 @@ public class IntakeOuttake {
 
             case DEPOSIT:
                 switch (specificInstruction) {
+                    case CLOSE_CLAWS:
+                        Claw.close_left_claw();
+                        Claw.close_right_claw();
+                        reset(SpecificInstructions.EXTEND_VERTICAL);
+                        break;
                     case EXTEND_VERTICAL:
-                        VerticalSlides.go_to_low();
-                        reset(SpecificInstructions.EXTEND_DEPOSIT_HORIZONTAL);
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            vertical_slides.go_to_low();
+                            reset(SpecificInstructions.EXTEND_DEPOSIT_HORIZONTAL);
+                        }
                         break;
                     case EXTEND_DEPOSIT_HORIZONTAL:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
-                            DepositHorizontalSlides.deposit();
+                            deposit_horizontal_slides.deposit();
                             reset(SpecificInstructions.TILT_CLAWS);
                         }
                         break;
                     case TILT_CLAWS:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
-                            Claw.deposit_tilt();
+                            claw.deposit_tilt();
                         }
                         break;
                 }
                 break;
         }
 
-        Claw.set();
-        DepositHorizontalSlides.set();
-        Intake.setIntake();
-        Intake.setDropdown();
-        VerticalSlides.set();
-        HorizontalSlides.set();
+        claw.set();
+        deposit_horizontal_slides.set();
+        intake.setIntake();
+        intake.setDropdown();
+        vertical_slides.set();
+        horizontal_slides.set();
     }
 
     public void setInstructions(Instructions instruction) {
@@ -193,22 +189,23 @@ public class IntakeOuttake {
         OPEN_RIGHT_CLAW,
     }
     public enum SpecificInstructions {
-        CLOSED(0),
-        SPIN_ROLLERS(0),
-        REVERSE_ROLLERS(0),
-        STOP_ROLLERS(0),
-        EXTEND_HORIZONTAL(0),
-        RETRACT_HORIZONTAL(0),
-        EXTEND_DEPOSIT_HORIZONTAL(0),
-        RETRACT_DEPOSIT_HORIZONTAL(0),
-        CLOSE_CLAWS(0),
-        TILT_CLAWS(0),
-        DROPDOWN_DOWN(0),
-        DROPDOWN_UP(0),
-        OPEN_LEFT_CLAW(0),
-        OPEN_RIGHT_CLAW(0),
-        EXTEND_VERTICAL(0),
-        RETRACT_VERTICAL(0);
+        CLOSED(1000),
+        SPIN_ROLLERS(1000),
+        REVERSE_ROLLERS(1000),
+        STOP_ROLLERS(1000),
+        EXTEND_HORIZONTAL(1000),
+        RETRACT_HORIZONTAL(1000),
+        EXTEND_DEPOSIT_HORIZONTAL(1000),
+        RETRACT_DEPOSIT_HORIZONTAL(1000),
+        CLOSE_CLAWS(1000),
+        TILT_CLAWS(1000),
+        DROPDOWN_DOWN(1000),
+        DROPDOWN_UP(1000),
+        OPEN_LEFT_CLAW(1000),
+        OPEN_RIGHT_CLAW(1000),
+        EXTEND_VERTICAL(1000),
+        RETRACT_VERTICAL(1000),
+        OPEN_CLAWS(1000);
 
         private final int executionTime;
 

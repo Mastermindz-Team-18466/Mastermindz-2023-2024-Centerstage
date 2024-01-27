@@ -6,20 +6,22 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class HorizontalSlides {
     public static PIDController controller;
-    public static final double p = 0.1, i = 0, d = 0.001;
+    public static final double p = 0.1, i = 0, d = 0;
     public static final double f = 0.00004;
-    public static final int extendedBound = -900;
-    public static final int retractedBound = 15;
+    public static final int extendedBound = -500;
+    public static final int retractedBound = 0;
 
     public static DcMotorEx leftHorizontalSlides;
     public static DcMotorEx rightHorizontalSlides;
-    public static double current_position;
+    public static double current_position = 0;
 
     public HorizontalSlides(HardwareMap hardwareMap) {
         controller = new PIDController(p, i, d);
 
         leftHorizontalSlides = hardwareMap.get(DcMotorEx.class, "left_horizontal");
         rightHorizontalSlides = hardwareMap.get(DcMotorEx.class, "right_horizontal");
+
+        current_position = leftHorizontalSlides.getCurrentPosition();
     }
 
     public static void set() {
@@ -31,9 +33,9 @@ public class HorizontalSlides {
         }
 
         controller.setPID(p, i, d);
-        double current_position = leftHorizontalSlides.getCurrentPosition();
+        double horizontal_current_position = leftHorizontalSlides.getCurrentPosition();
 
-        double pid = controller.calculate(current_position, current_position);
+        double pid = controller.calculate(horizontal_current_position, current_position);
 
         double power = pid + f;
 
