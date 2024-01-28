@@ -13,7 +13,7 @@ public class Intake {
     public static final double intakeSpeed = 1;
     public static final double outtakeSpeed = -1;
     public static final double dropdown_up_position = 1;
-    public static final double dropdown_down_position = 0.35;
+    public static final double dropdown_down_position = 0.25;
     public static double intake_current_speed = 0;
     public static Double dropdown_current_position = 0.1;
 

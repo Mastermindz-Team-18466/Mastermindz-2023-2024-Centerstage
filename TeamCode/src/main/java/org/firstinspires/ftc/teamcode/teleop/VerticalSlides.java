@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class VerticalSlides {
     private static PIDController controller;
-    private static final double p = 0.032, i = 0, d = 0.0001;
+    private static final double p = 0.032, i = 0, d = 0;
     private static final double f = 0.00004;
     private static final int extendedBound = -2700;
-    private static final int retractedBound = 0;
-    private static final double ground_position = 0;
+    private static final int retractedBound = 30;
+    private static final double ground_position = 30;
     private static final double closed_reset = -800;
     private static final double low_position = -900;
     private static final double medium_position = -1600;

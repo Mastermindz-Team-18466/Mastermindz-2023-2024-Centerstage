@@ -43,10 +43,15 @@ public class IntakeOuttake {
         switch (instruction) {
             case CLOSED:
                 switch (specificInstruction) {
-
                     case EXTEND_VERTICAL:
                         VerticalSlides.go_to_closed_reset();
-                        reset(SpecificInstructions.CLOSE_CLAWS);
+                        reset(SpecificInstructions.RETRACT_HORIZONTAL);
+                        break;
+                    case RETRACT_HORIZONTAL:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            HorizontalSlides.retract();
+                            reset(SpecificInstructions.CLOSE_CLAWS);
+                        }
                         break;
                     case CLOSE_CLAWS:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
@@ -78,12 +83,6 @@ public class IntakeOuttake {
                         if (System.currentTimeMillis() - previous_action > waitTime) {
                             Intake.stop();
                             reset(SpecificInstructions.RETRACT_HORIZONTAL);
-                        }
-                        break;
-                    case RETRACT_HORIZONTAL:
-                        if (System.currentTimeMillis() - previous_action > waitTime) {
-                            HorizontalSlides.retract();
-                            reset(SpecificInstructions.RETRACT_VERTICAL);
                         }
                         break;
                     case RETRACT_VERTICAL:

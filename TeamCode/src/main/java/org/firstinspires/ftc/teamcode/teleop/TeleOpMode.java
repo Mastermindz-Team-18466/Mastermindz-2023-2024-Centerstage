@@ -52,7 +52,7 @@ public class TeleOpMode extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            driver.drive.update();
+            driver.move();
             in_out_take.update();
 
             previousGamepad1.copy(currentGamepad1);
@@ -99,6 +99,10 @@ public class TeleOpMode extends LinearOpMode {
                 in_out_take.claw.close_left_claw();
                 in_out_take.claw.close_right_claw();
             }
+
+            in_out_take.horizontal_slides.current_position -= gamepad2.left_stick_x * 25;
+
+            in_out_take.vertical_slides.current_position -= gamepad2.right_stick_y * 100;
 
             // telemetry
             telemetry.update();

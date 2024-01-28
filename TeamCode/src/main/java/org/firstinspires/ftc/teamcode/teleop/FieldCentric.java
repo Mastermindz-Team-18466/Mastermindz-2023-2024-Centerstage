@@ -44,7 +44,7 @@ public class FieldCentric {
                 new Pose2d(
                         -gamepad.left_stick_y,
                         -gamepad.left_stick_x,
-                        -3 * gamepad.right_stick_x
+                        -gamepad.right_stick_x
                 )
         );
 

@@ -36,9 +36,9 @@ public class SpikemarkDetection implements VisionProcessor {
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
-        double[] hsvThresholdHue = {0, 117};
-        double[] hsvThresholdSaturation = {210, 255.0};
-        double[] hsvThresholdValue = {0, 116};
+        double[] hsvThresholdHue = {120, 130};
+        double[] hsvThresholdSaturation = {180, 255};
+        double[] hsvThresholdValue = {50, 175};
         hsvThreshold(frame, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, frame);
 
         Mat matLeft = frame.submat(0, 240, 0, 106);
