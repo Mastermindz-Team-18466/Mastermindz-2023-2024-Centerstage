@@ -6,12 +6,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class VerticalSlides {
     private static PIDController controller;
-    private static final double p = 0.04, i = 0, d = 0.0001;
+    private static final double p = 0.032, i = 0, d = 0.0001;
     private static final double f = 0.00004;
     private static final int extendedBound = -2700;
     private static final int retractedBound = 0;
     private static final double ground_position = 0;
-    private static final double low_position = -800;
+    private static final double closed_reset = -800;
+    private static final double low_position = -900;
     private static final double medium_position = -1600;
     private static final double high_position = -2700;
     public static DcMotorEx verticalSlides;
@@ -57,5 +58,9 @@ public class VerticalSlides {
 
     public static void go_to_ground() {
         current_position = ground_position;
+    }
+
+    public static void go_to_closed_reset() {
+        current_position = closed_reset;
     }
 }

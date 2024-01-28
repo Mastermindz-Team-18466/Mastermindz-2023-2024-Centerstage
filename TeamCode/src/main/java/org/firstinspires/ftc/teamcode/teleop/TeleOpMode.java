@@ -34,8 +34,8 @@ public class TeleOpMode extends LinearOpMode {
 
         in_out_take = new IntakeOuttake(sensors, claw, deposit_horizontal_slides, horizontal_slides, intake, vertical_slides);
 
-       in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
-       in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
+        in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
+        in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
 
         Gamepad currentGamepad1 = new Gamepad();
         Gamepad currentGamepad2 = new Gamepad();
@@ -62,8 +62,22 @@ public class TeleOpMode extends LinearOpMode {
             currentGamepad2.copy(gamepad2);
 
             if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) {
-                in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED_INTAKE);
-                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.DROPDOWN_DOWN);
+                in_out_take.setInstructions(IntakeOuttake.Instructions.EXTEND_VERTICAL_FOR_INTAKE);
+                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
+                in_out_take.intake.intake();
+            }
+
+            if (currentGamepad2.right_bumper && !previousGamepad2.right_bumper) {
+                in_out_take.intake.outtake();
+            }
+
+            if (currentGamepad2.y && !previousGamepad2.y) {
+                in_out_take.intake.stop();
+            }
+
+            if (currentGamepad2.dpad_up && !(previousGamepad2.dpad_up)) {
+                in_out_take.setInstructions(IntakeOuttake.Instructions.OPEN_INTAKE);
+                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
             }
 
             if (currentGamepad2.right_trigger > 0.5 && !(previousGamepad2.right_trigger > 0.5)) {
@@ -78,10 +92,10 @@ public class TeleOpMode extends LinearOpMode {
 
             if (currentGamepad2.left_trigger > 0.5 && !(previousGamepad2.left_trigger > 0.5)) {
                 in_out_take.setInstructions(IntakeOuttake.Instructions.DEPOSIT);
-                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.CLOSE_CLAWS);
+                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.RETRACT_VERTICAL);
             }
 
-            if(currentGamepad2.a && !previousGamepad2.a) {
+            if (currentGamepad2.a && !previousGamepad2.a) {
                 in_out_take.claw.close_left_claw();
                 in_out_take.claw.close_right_claw();
             }

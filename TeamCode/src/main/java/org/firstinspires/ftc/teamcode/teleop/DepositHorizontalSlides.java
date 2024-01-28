@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class DepositHorizontalSlides {
+public class  DepositHorizontalSlides {
     public static Servo left_deposit_horizontal_slides;
     public static Servo right_deposit_horizontal_slides;
     public static final double deposit_position = 0.4;
@@ -13,7 +13,7 @@ public class DepositHorizontalSlides {
     static final int CYCLE_MS = 50;
     public double TURNING_POINT = 0.85;
     static double previous_action = System.currentTimeMillis();
-    public static double left_current_position = 0.7, right_current_position = 0.75;
+    public static Double left_current_position = 0.7, right_current_position = 0.75;
 
     public DepositHorizontalSlides(HardwareMap hardwareMap) {
         left_deposit_horizontal_slides = hardwareMap.get(Servo.class, "left_deposit_horizontal");
@@ -21,13 +21,17 @@ public class DepositHorizontalSlides {
 
         left_deposit_horizontal_slides.setDirection(Servo.Direction.REVERSE);
 
-        left_current_position = left_deposit_horizontal_slides.getPosition();
-        right_current_position = right_deposit_horizontal_slides.getPosition();
+        left_current_position = null;
+        right_current_position = null;
     }
 
     public static void set() {
-        left_deposit_horizontal_slides.setPosition(left_current_position);
-        right_deposit_horizontal_slides.setPosition(right_current_position);
+        if(left_current_position != null) {
+            left_deposit_horizontal_slides.setPosition(left_current_position);
+        }
+        if(right_current_position != null) {
+            right_deposit_horizontal_slides.setPosition(right_current_position);
+        }
     }
 
     public static void intake() {

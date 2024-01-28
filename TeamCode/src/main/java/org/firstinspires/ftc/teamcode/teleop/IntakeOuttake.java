@@ -43,8 +43,9 @@ public class IntakeOuttake {
         switch (instruction) {
             case CLOSED:
                 switch (specificInstruction) {
+
                     case EXTEND_VERTICAL:
-                        VerticalSlides.go_to_low();
+                        VerticalSlides.go_to_closed_reset();
                         reset(SpecificInstructions.CLOSE_CLAWS);
                         break;
                     case CLOSE_CLAWS:
@@ -89,6 +90,10 @@ public class IntakeOuttake {
                         if (System.currentTimeMillis() - previous_action > waitTime) {
                             VerticalSlides.go_to_ground();
                         }
+                        if(VerticalSlides.verticalSlides.getCurrentPosition() >= -10){
+                            Claw.left_claw_tilt_position = 0.315;
+                            Claw.right_claw_tilt_position = 0.175;
+                        }
                         break;
                 }
                 break;
@@ -96,7 +101,7 @@ public class IntakeOuttake {
             case CLOSED_INTAKE:
                 switch (specificInstruction) {
                     case DROPDOWN_DOWN:
-                        intake.dropdown_up();
+                        intake.dropdown_down();
                         reset(SpecificInstructions.SPIN_ROLLERS);
                         break;
                     case SPIN_ROLLERS:
@@ -109,13 +114,19 @@ public class IntakeOuttake {
 
             case OPEN_INTAKE:
                 switch (specificInstruction) {
-                    case EXTEND_HORIZONTAL:
-                        HorizontalSlides.extend();
-                        reset(SpecificInstructions.DROPDOWN_DOWN);
+                    case EXTEND_VERTICAL:
+                        vertical_slides.go_to_low();
+                        reset(SpecificInstructions.EXTEND_HORIZONTAL);
                         break;
+                    case EXTEND_HORIZONTAL:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            HorizontalSlides.extend();
+                            reset(SpecificInstructions.DROPDOWN_DOWN);
+                            break;
+                        }
                     case DROPDOWN_DOWN:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
-                            Intake.dropdown_up();
+                            Intake.dropdown_down();
                             reset(SpecificInstructions.SPIN_ROLLERS);
                         }
                         break;
@@ -143,12 +154,27 @@ public class IntakeOuttake {
                 }
                 break;
 
+            case EXTEND_VERTICAL_FOR_INTAKE:
+                switch (specificInstruction) {
+                    case EXTEND_VERTICAL:
+                        vertical_slides.go_to_low();
+                        intake.dropdown_down();
+                        break;
+                }
+                break;
+
             case DEPOSIT:
                 switch (specificInstruction) {
+                    case RETRACT_VERTICAL:
+                        vertical_slides.go_to_ground();
+                        reset(specificInstruction.CLOSE_CLAWS);
+                        break;
                     case CLOSE_CLAWS:
-                        Claw.close_left_claw();
-                        Claw.close_right_claw();
-                        reset(SpecificInstructions.EXTEND_VERTICAL);
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            Claw.close_left_claw();
+                            Claw.close_right_claw();
+                            reset(SpecificInstructions.EXTEND_VERTICAL);
+                        }
                         break;
                     case EXTEND_VERTICAL:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
@@ -186,6 +212,7 @@ public class IntakeOuttake {
     public void setSpecificInstruction(SpecificInstructions specificInstruction) {
         this.specificInstruction = specificInstruction;
     }
+
     public enum Instructions {
         CLOSED,
         CLOSED_INTAKE,
@@ -193,25 +220,27 @@ public class IntakeOuttake {
         DEPOSIT,
         OPEN_LEFT_CLAW,
         OPEN_RIGHT_CLAW,
+        EXTEND_VERTICAL_FOR_INTAKE
     }
+
     public enum SpecificInstructions {
         CLOSED(1000),
         SPIN_ROLLERS(1000),
         REVERSE_ROLLERS(1000),
-        STOP_ROLLERS(1000),
+        STOP_ROLLERS(0),
         EXTEND_HORIZONTAL(1000),
-        RETRACT_HORIZONTAL(1000),
+        RETRACT_HORIZONTAL(50),
         EXTEND_DEPOSIT_HORIZONTAL(1000),
-        RETRACT_DEPOSIT_HORIZONTAL(1000),
-        CLOSE_CLAWS(1000),
-        TILT_CLAWS(1000),
+        RETRACT_DEPOSIT_HORIZONTAL(200),
+        CLOSE_CLAWS(300),
+        TILT_CLAWS(300),
         DROPDOWN_DOWN(1000),
         DROPDOWN_UP(1000),
         OPEN_LEFT_CLAW(1000),
         OPEN_RIGHT_CLAW(1000),
         EXTEND_VERTICAL(1000),
-        RETRACT_VERTICAL(1000),
-        OPEN_CLAWS(1000);
+        RETRACT_VERTICAL(500),
+        OPEN_CLAWS(300);
 
         private final int executionTime;
 

@@ -12,19 +12,20 @@ public class Intake {
     public static Servo dropdown;
     public static final double intakeSpeed = 1;
     public static final double outtakeSpeed = -1;
-    public static final double dropdown_up_position = 0.5;
-    public static final double dropdown_down_position = 0.25;
+    public static final double dropdown_up_position = 1;
+    public static final double dropdown_down_position = 0.35;
     public static double intake_current_speed = 0;
-    public static double dropdown_current_position = 0.1;
+    public static Double dropdown_current_position = 0.1;
 
     public Intake(HardwareMap hardwareMap) {
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intake_motor");
         dropdown = hardwareMap.get(Servo.class, "dropdown");
 
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        dropdown.setDirection(Servo.Direction.REVERSE);
 
         intake_current_speed = intakeMotor.getPower();
-        dropdown_current_position = dropdown.getPosition();
+        dropdown_current_position = null;
     }
     public static void stop() {
         intake_current_speed = 0;
@@ -63,6 +64,8 @@ public class Intake {
     }
 
     public static void setDropdown() {
-        dropdown.setPosition(dropdown_current_position);
+        if(dropdown_current_position != null){
+            dropdown.setPosition(dropdown_current_position);
+        }
     }
 }

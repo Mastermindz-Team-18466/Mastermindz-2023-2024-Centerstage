@@ -9,7 +9,7 @@ public class HorizontalSlides {
     public static final double p = 0.1, i = 0, d = 0;
     public static final double f = 0.00004;
     public static final int extendedBound = -500;
-    public static final int retractedBound = 0;
+    public static final int retractedBound = 5;
 
     public static DcMotorEx leftHorizontalSlides;
     public static DcMotorEx rightHorizontalSlides;
