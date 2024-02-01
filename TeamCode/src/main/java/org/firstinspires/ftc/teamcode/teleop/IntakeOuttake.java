@@ -43,9 +43,17 @@ public class IntakeOuttake {
         switch (instruction) {
             case CLOSED:
                 switch (specificInstruction) {
+                    case DROP_PIXEL:
+                        Claw.open_left_claw();
+                        Claw.open_right_claw();
+                        reset(SpecificInstructions.EXTEND_VERTICAL);
+                        break;
                     case EXTEND_VERTICAL:
-                        VerticalSlides.go_to_closed_reset();
-                        reset(SpecificInstructions.RETRACT_HORIZONTAL);
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            vertical_slides.vertical_offset = 0;
+                            VerticalSlides.go_to_closed_reset();
+                            reset(SpecificInstructions.RETRACT_HORIZONTAL);
+                        }
                         break;
                     case RETRACT_HORIZONTAL:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
@@ -82,7 +90,7 @@ public class IntakeOuttake {
                     case STOP_ROLLERS:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
                             Intake.stop();
-                            reset(SpecificInstructions.RETRACT_HORIZONTAL);
+                            reset(SpecificInstructions.RETRACT_VERTICAL);
                         }
                         break;
                     case RETRACT_VERTICAL:
@@ -100,6 +108,7 @@ public class IntakeOuttake {
             case CLOSED_INTAKE:
                 switch (specificInstruction) {
                     case DROPDOWN_DOWN:
+                        vertical_slides.vertical_offset = 0;
                         intake.dropdown_down();
                         reset(SpecificInstructions.SPIN_ROLLERS);
                         break;
@@ -114,6 +123,7 @@ public class IntakeOuttake {
             case OPEN_INTAKE:
                 switch (specificInstruction) {
                     case EXTEND_VERTICAL:
+                        vertical_slides.vertical_offset = 0;
                         vertical_slides.go_to_low();
                         reset(SpecificInstructions.EXTEND_HORIZONTAL);
                         break;
@@ -156,6 +166,7 @@ public class IntakeOuttake {
             case EXTEND_VERTICAL_FOR_INTAKE:
                 switch (specificInstruction) {
                     case EXTEND_VERTICAL:
+                        vertical_slides.vertical_offset = 0;
                         vertical_slides.go_to_low();
                         intake.dropdown_down();
                         break;
@@ -165,6 +176,7 @@ public class IntakeOuttake {
             case DEPOSIT:
                 switch (specificInstruction) {
                     case RETRACT_VERTICAL:
+                        vertical_slides.vertical_offset = 0;
                         vertical_slides.go_to_ground();
                         reset(specificInstruction.CLOSE_CLAWS);
                         break;
@@ -239,7 +251,8 @@ public class IntakeOuttake {
         OPEN_RIGHT_CLAW(1000),
         EXTEND_VERTICAL(1000),
         RETRACT_VERTICAL(500),
-        OPEN_CLAWS(300);
+        OPEN_CLAWS(300),
+        DROP_PIXEL(300);
 
         private final int executionTime;
 

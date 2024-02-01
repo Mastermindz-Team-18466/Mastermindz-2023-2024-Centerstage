@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class VerticalSlides {
     private static PIDController controller;
-    private static final double p = 0.032, i = 0, d = 0;
+    private static final double p = 0.032, i = 0, d = 0.0001;
     private static final double f = 0.00004;
     private static final int extendedBound = -2700;
     private static final int retractedBound = 30;
@@ -18,6 +18,8 @@ public class VerticalSlides {
     public static DcMotorEx verticalSlides;
     public static double current_position = 0;
 
+    public static double vertical_offset = 0;
+
     public VerticalSlides(HardwareMap hardwareMap) {
         controller = new PIDController(p, i, d);
 
@@ -27,17 +29,17 @@ public class VerticalSlides {
     }
 
     public static void set() {
-        if (current_position <= extendedBound) {
+        if (current_position + vertical_offset <= extendedBound) {
             current_position = extendedBound;
         }
-        if (current_position >= retractedBound) {
+        if (current_position + vertical_offset >= retractedBound) {
             current_position = retractedBound;
         }
 
         controller.setPID(p, i, d);
         double vertical_current_position = verticalSlides.getCurrentPosition();
 
-        double pid = controller.calculate(vertical_current_position, current_position);
+        double pid = controller.calculate(vertical_current_position + vertical_offset, current_position);
 
         double power = pid + f;
 

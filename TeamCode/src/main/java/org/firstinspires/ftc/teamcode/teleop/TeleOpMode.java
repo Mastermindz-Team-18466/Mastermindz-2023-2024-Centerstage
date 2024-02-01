@@ -82,7 +82,7 @@ public class TeleOpMode extends LinearOpMode {
 
             if (currentGamepad2.right_trigger > 0.5 && !(previousGamepad2.right_trigger > 0.5)) {
                 in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
-                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
+                in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.DROP_PIXEL);
             }
 
             if (currentGamepad2.b && !previousGamepad2.b) {
@@ -100,9 +100,9 @@ public class TeleOpMode extends LinearOpMode {
                 in_out_take.claw.close_right_claw();
             }
 
-            in_out_take.horizontal_slides.current_position -= gamepad2.left_stick_x * 25;
-
-            in_out_take.vertical_slides.current_position -= gamepad2.right_stick_y * 100;
+            if (Math.abs(gamepad2.left_stick_x) >= 0.5 || Math.abs(gamepad2.right_stick_y) >= 0.5) {
+                in_out_take.vertical_slides.vertical_offset -= gamepad2.right_stick_y * 5;
+            }
 
             // telemetry
             telemetry.update();
