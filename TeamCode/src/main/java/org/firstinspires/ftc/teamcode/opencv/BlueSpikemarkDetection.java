@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.opencv;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -14,7 +12,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-public class SpikemarkDetection implements VisionProcessor {
+public class BlueSpikemarkDetection implements VisionProcessor {
     private final Mat mat = new Mat();
     Telemetry telemetry;
     public enum SpikemarkPosition {
@@ -26,7 +24,7 @@ public class SpikemarkDetection implements VisionProcessor {
 
     public SpikemarkPosition position = SpikemarkPosition.DEFAULT;
 
-    public SpikemarkDetection(Telemetry telemetry) {
+    public BlueSpikemarkDetection(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
 
@@ -36,9 +34,9 @@ public class SpikemarkDetection implements VisionProcessor {
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
-        double[] hsvThresholdHue = {120, 130};
-        double[] hsvThresholdSaturation = {180, 255};
-        double[] hsvThresholdValue = {50, 175};
+        double[] hsvThresholdHue = {74, 130};
+        double[] hsvThresholdSaturation = {191, 255};
+        double[] hsvThresholdValue = {0, 255};
         hsvThreshold(frame, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, frame);
 
         Mat matLeft = frame.submat(0, 240, 0, 106);
@@ -86,7 +84,7 @@ public class SpikemarkDetection implements VisionProcessor {
     }
     private void hsvThreshold(Mat input, double[] hue, double[] sat, double[] val,
                               Mat out) {
-        Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HSV);
+        Imgproc.cvtColor(input, out, Imgproc.COLOR_RGB2HSV);
         Core.inRange(out, new Scalar(hue[0], sat[0], val[0]),
                 new Scalar(hue[1], sat[1], val[1]), out);
     }

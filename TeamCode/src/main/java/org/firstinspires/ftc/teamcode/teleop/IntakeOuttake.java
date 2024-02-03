@@ -84,12 +84,6 @@ public class IntakeOuttake {
                         if (System.currentTimeMillis() - previous_action > waitTime) {
                             Claw.open_left_claw();
                             Claw.open_right_claw();
-                            reset(SpecificInstructions.STOP_ROLLERS);
-                        }
-                        break;
-                    case STOP_ROLLERS:
-                        if (System.currentTimeMillis() - previous_action > waitTime) {
-                            Intake.stop();
                             reset(SpecificInstructions.RETRACT_VERTICAL);
                         }
                         break;
@@ -136,12 +130,6 @@ public class IntakeOuttake {
                     case DROPDOWN_DOWN:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
                             Intake.dropdown_down();
-                            reset(SpecificInstructions.SPIN_ROLLERS);
-                        }
-                        break;
-                    case SPIN_ROLLERS:
-                        if (System.currentTimeMillis() - previous_action > waitTime) {
-                            Intake.intake();
                         }
                         break;
                 }
