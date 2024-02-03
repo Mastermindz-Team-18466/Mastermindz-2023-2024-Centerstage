@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
 import java.util.Arrays;
 
 @TeleOp(group = "EncodersTest")
-@Disabled
+//@Disabled
 public class encoderTest extends LinearOpMode {
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 

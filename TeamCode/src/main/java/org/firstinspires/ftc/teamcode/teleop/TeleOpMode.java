@@ -34,7 +34,7 @@ public class TeleOpMode extends LinearOpMode {
 
         in_out_take = new IntakeOuttake(sensors, claw, deposit_horizontal_slides, horizontal_slides, intake, vertical_slides);
 
-        in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
+        in_out_take.setInstructions(IntakeOuttake.Instructions.INITIAL_CLOSED);
         in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
 
         Gamepad currentGamepad1 = new Gamepad();
@@ -100,8 +100,8 @@ public class TeleOpMode extends LinearOpMode {
                 in_out_take.claw.close_right_claw();
             }
 
-            if (Math.abs(gamepad2.left_stick_x) >= 0.5 || Math.abs(gamepad2.right_stick_y) >= 0.5) {
-                in_out_take.vertical_slides.vertical_offset -= gamepad2.right_stick_y * 5;
+            if (Math.abs(gamepad2.left_stick_y) >= 0.5 || Math.abs(gamepad2.right_stick_x) >= 0.5) {
+                in_out_take.vertical_slides.vertical_offset -= gamepad2.left_stick_y * 25;
             }
 
             // telemetry

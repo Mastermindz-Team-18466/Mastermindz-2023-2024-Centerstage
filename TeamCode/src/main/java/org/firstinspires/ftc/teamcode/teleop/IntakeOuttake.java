@@ -41,6 +41,68 @@ public class IntakeOuttake {
 
     public void update() {
         switch (instruction) {
+            case INITIAL_CLOSED:
+                switch (specificInstruction) {
+                    case EXTEND_VERTICAL:
+                        vertical_slides.vertical_offset = 0;
+                        if(VerticalSlides.verticalSlides.getCurrentPosition() > -900) {
+                            VerticalSlides.go_to_closed_reset();
+                            reset(SpecificInstructions.RETRACT_HORIZONTAL);
+                        }
+                        else{
+                            reset(SpecificInstructions.RETRACT_HORIZONTAL);
+                        }
+                        break;
+                    case RETRACT_HORIZONTAL:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            HorizontalSlides.retract();
+                            reset(SpecificInstructions.CLOSE_CLAWS);
+                        }
+                        break;
+                    case CLOSE_CLAWS:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            Claw.close_left_claw();
+                            Claw.close_right_claw();
+                            reset(SpecificInstructions.RETRACT_DEPOSIT_HORIZONTAL);
+                        }
+                        break;
+                    case RETRACT_DEPOSIT_HORIZONTAL:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            DepositHorizontalSlides.intake();
+                            reset(SpecificInstructions.TILT_CLAWS);
+                        }
+                        break;
+                    case TILT_CLAWS:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            Claw.intake_tilt();
+                            reset(SpecificInstructions.OPEN_CLAWS);
+                        }
+                        break;
+                    case OPEN_CLAWS:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            Claw.open_left_claw();
+                            Claw.open_right_claw();
+                            reset(SpecificInstructions.STOP_ROLLERS);
+                        }
+                        break;
+                    case STOP_ROLLERS:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            Intake.stop();
+                            reset(SpecificInstructions.RETRACT_VERTICAL);
+                        }
+                        break;
+                    case RETRACT_VERTICAL:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            VerticalSlides.go_to_ground();
+                        }
+                        if (VerticalSlides.verticalSlides.getCurrentPosition() >= -10) {
+                            Claw.left_claw_tilt_position = 0.315;
+                            Claw.right_claw_tilt_position = 0.175;
+                        }
+                        break;
+                }
+                break;
+
             case CLOSED:
                 switch (specificInstruction) {
                     case DROP_PIXEL:
@@ -97,7 +159,7 @@ public class IntakeOuttake {
                         if (System.currentTimeMillis() - previous_action > waitTime) {
                             VerticalSlides.go_to_ground();
                         }
-                        if(VerticalSlides.verticalSlides.getCurrentPosition() >= -10){
+                        if (VerticalSlides.verticalSlides.getCurrentPosition() >= -10) {
                             Claw.left_claw_tilt_position = 0.315;
                             Claw.right_claw_tilt_position = 0.175;
                         }
@@ -225,6 +287,7 @@ public class IntakeOuttake {
     }
 
     public enum Instructions {
+        INITIAL_CLOSED,
         CLOSED,
         CLOSED_INTAKE,
         OPEN_INTAKE,

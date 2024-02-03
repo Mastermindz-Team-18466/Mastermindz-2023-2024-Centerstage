@@ -13,8 +13,9 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvPipeline;
 
-public class SpikemarkDetection implements VisionProcessor {
+public class SpikemarkDetection extends OpenCvPipeline implements VisionProcessor {
     private final Mat mat = new Mat();
     Telemetry telemetry;
     public enum SpikemarkPosition {
@@ -79,6 +80,11 @@ public class SpikemarkDetection implements VisionProcessor {
 
     public SpikemarkPosition getPosition() {
         return position;
+    }
+
+    @Override
+    public Mat processFrame(Mat input) {
+        return null;
     }
 
     @Override
