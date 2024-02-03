@@ -6,7 +6,7 @@ public class IntakeOuttake {
     Claw claw;
     DepositHorizontalSlides deposit_horizontal_slides;
     HorizontalSlides horizontal_slides;
-    Intake intake;
+    public Intake intake;
     VerticalSlides vertical_slides;
     Sensors sensors;
     public Instructions instruction;
@@ -44,6 +44,7 @@ public class IntakeOuttake {
             case INITIAL_CLOSED:
                 switch (specificInstruction) {
                     case EXTEND_VERTICAL:
+                        intake.dropdown_up();
                         vertical_slides.vertical_offset = 0;
                         if(VerticalSlides.verticalSlides.getCurrentPosition() > -900) {
                             VerticalSlides.go_to_closed_reset();
@@ -111,9 +112,12 @@ public class IntakeOuttake {
                         reset(SpecificInstructions.EXTEND_VERTICAL);
                         break;
                     case EXTEND_VERTICAL:
-                        if (System.currentTimeMillis() - previous_action > waitTime) {
-                            vertical_slides.vertical_offset = 0;
+                        vertical_slides.vertical_offset = 0;
+                        if (VerticalSlides.verticalSlides.getCurrentPosition() > -900) {
                             VerticalSlides.go_to_closed_reset();
+                            reset(SpecificInstructions.RETRACT_HORIZONTAL);
+                        }
+                        else {
                             reset(SpecificInstructions.RETRACT_HORIZONTAL);
                         }
                         break;
@@ -154,8 +158,15 @@ public class IntakeOuttake {
                             VerticalSlides.go_to_ground();
                         }
                         if (VerticalSlides.verticalSlides.getCurrentPosition() >= -10) {
-                            Claw.left_claw_tilt_position = 0.315;
-                            Claw.right_claw_tilt_position = 0.175;
+                            Claw.left_claw_tilt_position = 0.3075;
+                            Claw.right_claw_tilt_position = 0.17;
+                            reset(SpecificInstructions.STOP_ROLLERS);
+                        }
+                        break;
+                    case STOP_ROLLERS:
+                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                            Intake.stop();
+                            reset(SpecificInstructions.RETRACT_VERTICAL);
                         }
                         break;
                 }
@@ -223,6 +234,16 @@ public class IntakeOuttake {
                 }
                 break;
 
+            case STACK_INTAKE:
+                switch (specificInstruction) {
+                    case EXTEND_VERTICAL:
+                        vertical_slides.vertical_offset = 0;
+                        vertical_slides.go_to_low();
+                        intake.dropdown_down(0.4);
+                        break;
+                }
+                break;
+
             case DEPOSIT:
                 switch (specificInstruction) {
                     case RETRACT_VERTICAL:
@@ -244,7 +265,7 @@ public class IntakeOuttake {
                         }
                         break;
                     case EXTEND_DEPOSIT_HORIZONTAL:
-                        if (System.currentTimeMillis() - previous_action > waitTime) {
+                        if (System.currentTimeMillis() - previous_action > waitTime && vertical_slides.verticalSlides.getCurrentPosition() <= -760) {
                             deposit_horizontal_slides.deposit();
                             reset(SpecificInstructions.TILT_CLAWS);
                         }
@@ -282,7 +303,8 @@ public class IntakeOuttake {
         DEPOSIT,
         OPEN_LEFT_CLAW,
         OPEN_RIGHT_CLAW,
-        EXTEND_VERTICAL_FOR_INTAKE
+        EXTEND_VERTICAL_FOR_INTAKE,
+        STACK_INTAKE
     }
 
     public enum SpecificInstructions {
@@ -294,14 +316,14 @@ public class IntakeOuttake {
         RETRACT_HORIZONTAL(50),
         EXTEND_DEPOSIT_HORIZONTAL(1000),
         RETRACT_DEPOSIT_HORIZONTAL(200),
-        CLOSE_CLAWS(300),
+        CLOSE_CLAWS(500),
         TILT_CLAWS(300),
         DROPDOWN_DOWN(1000),
         DROPDOWN_UP(1000),
         OPEN_LEFT_CLAW(1000),
         OPEN_RIGHT_CLAW(1000),
         EXTEND_VERTICAL(1000),
-        RETRACT_VERTICAL(500),
+        RETRACT_VERTICAL(750),
         OPEN_CLAWS(300),
         DROP_PIXEL(300);
 

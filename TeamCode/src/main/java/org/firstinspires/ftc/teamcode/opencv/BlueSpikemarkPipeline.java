@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.opencv;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -15,7 +13,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class RedSpikemarkDetection implements VisionProcessor {
+public class BlueSpikemarkPipeline extends OpenCvPipeline {
     private final Mat mat = new Mat();
     Telemetry telemetry;
     public enum SpikemarkPosition {
@@ -27,24 +25,20 @@ public class RedSpikemarkDetection implements VisionProcessor {
 
     public SpikemarkPosition position = SpikemarkPosition.DEFAULT;
 
-    public RedSpikemarkDetection(Telemetry telemetry) {
+    public BlueSpikemarkPipeline(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
 
     @Override
-    public void init(int width, int height, CameraCalibration calibration) {
-    }
-
-    @Override
-    public Object processFrame(Mat frame, long captureTimeNanos) {
-        double[] hsvThresholdHue = {0, 180};
-        double[] hsvThresholdSaturation = {185, 255};
-        double[] hsvThresholdValue = {70, 209};
+    public Mat processFrame(Mat frame) {
+        double[] hsvThresholdHue = {74, 130};
+        double[] hsvThresholdSaturation = {191, 255};
+        double[] hsvThresholdValue = {0, 255};
         hsvThreshold(frame, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, frame);
 
-        Mat matLeft = frame.submat(0, 240, 0, 106);
-        Mat matCenter = frame.submat(0, 240, 106, 213);
-        Mat matRight = frame.submat(0, 240, 213, 320);
+        Mat matLeft = frame.submat(0, 448, 0, 267);
+        Mat matCenter = frame.submat(0, 448, 267, 533);
+        Mat matRight = frame.submat(0, 448, 533, 800);
 
         Imgproc.rectangle(frame, new Rect(0, 0, 106, 240), new Scalar(0, 255, 0));
         Imgproc.rectangle(frame, new Rect(106, 0, 107, 240), new Scalar(0, 255, 0));
@@ -75,20 +69,11 @@ public class RedSpikemarkDetection implements VisionProcessor {
 
         telemetry.update();
 
-        return null;
+        return frame;
     }
 
     public SpikemarkPosition getPosition() {
         return position;
-    }
-
-    @Override
-    public Mat processFrame(Mat input) {
-        return null;
-    }
-
-    @Override
-    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
     }
     private void hsvThreshold(Mat input, double[] hue, double[] sat, double[] val,
                               Mat out) {

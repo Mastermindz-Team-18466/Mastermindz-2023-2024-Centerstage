@@ -12,8 +12,8 @@ public class Claw {
     public static final double left_claw_close_position = 0;
     public static final double right_claw_open_position = 0.38;
     public static final double right_claw_close_position = 0;
-    public static final double left_claw_tilt_intake = 0.283;
-    public static final double right_claw_tilt_intake = 0.145;
+    public static final double left_claw_tilt_intake = 0.278;
+    public static final double right_claw_tilt_intake = 0.150;
     public static final double left_claw_tilt_deposit = 0.585;
     public static final double right_claw_tilt_deposit = 0.43;
     public static Double left_claw_position = 0.0;

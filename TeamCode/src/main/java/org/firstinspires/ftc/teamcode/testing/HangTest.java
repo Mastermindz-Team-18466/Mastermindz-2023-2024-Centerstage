@@ -31,13 +31,18 @@ public class HangTest extends LinearOpMode {
             if (gamepad1.a) {
                 left_hang.setPower(a_power);
                 right_hang.setPower(b_power);
-            } else{
-                left_hang.setPower(0);
-                right_hang.setPower(0);
             }
-            if(gamepad1.b){
+            else if (gamepad1.y) {
+                left_hang.setPower(-a_power);
+                right_hang.setPower(-b_power);
+            }
+            else if(gamepad1.b){
                 left_hang.setPwmDisable();
                 right_hang.setPwmDisable();
+            }
+            else{
+                left_hang.setPower(0);
+                right_hang.setPower(0);
             }
         }
     }
