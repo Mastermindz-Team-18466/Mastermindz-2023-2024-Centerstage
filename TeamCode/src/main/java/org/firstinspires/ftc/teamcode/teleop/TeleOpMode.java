@@ -71,6 +71,10 @@ public class TeleOpMode extends LinearOpMode {
                 in_out_take.intake.outtake();
             }
 
+            if (currentGamepad2.x && !previousGamepad2.x) {
+                in_out_take.intake.intake();
+            }
+
             if (currentGamepad2.y && !previousGamepad2.y) {
                 in_out_take.intake.stop();
             }
@@ -103,6 +107,13 @@ public class TeleOpMode extends LinearOpMode {
             if (Math.abs(gamepad2.left_stick_y) >= 0.5 || Math.abs(gamepad2.right_stick_x) >= 0.5) {
                 in_out_take.vertical_slides.vertical_offset -= gamepad2.left_stick_y * 25;
             }
+
+            if (gamepad1.left_trigger > 0.2) {
+                driver.drive.slowMode = 4.5;
+            } else {
+                driver.drive.slowMode = 1;
+            }
+            
 
             // telemetry
             telemetry.update();

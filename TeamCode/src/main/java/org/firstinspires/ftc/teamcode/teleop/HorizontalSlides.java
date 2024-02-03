@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class HorizontalSlides {
     public static PIDController controller;
-    public static final double p = 0.075, i = 0, d = 0;
+    public static final double p = 0.05, i = 0, d = 0;
     public static final double f = 0.00004;
     public static final int extendedBound = -600;
     public static final int extended = -500;
