@@ -87,7 +87,7 @@ public class BlueFar extends LinearOpMode {
         });
 
 
-        while (!isStarted() && !isStopRequested()) {
+        while (!isStarted() && !isStopRequested() && !opModeIsActive()) {
             in_out_take.update();
             telemetry.update();
         }
@@ -103,40 +103,26 @@ public class BlueFar extends LinearOpMode {
                     .splineToConstantHeading(new Vector2d(startPose.getX() - 0 * TILE_SIZE, startPose.getY() - 2.1 * (TILE_SIZE)), Math.toRadians(270))
                     .lineToSplineHeading(new Pose2d(startPose.getX() - 0.1 * TILE_SIZE, startPose.getY() - 2.1 * (TILE_SIZE), Math.toRadians(180)))
                     .lineToSplineHeading(new Pose2d(startPose.getX() - 0.95 * TILE_SIZE, startPose.getY() - 2.1 * (TILE_SIZE), Math.toRadians(180)))
-                    .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                        in_out_take.setInstructions(IntakeOuttake.Instructions.STACK_INTAKE);
-                        in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
-                        Intake.intake();
-                    })
                     .waitSeconds(3)
-                    .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                        in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
-                        in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.DROP_PIXEL);
-                    })
-                    .turn(Math.toRadians(-5))
-                    .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                        Intake.outtake();
-                    })
-                    .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                        Intake.stop();
-                    })
                     .waitSeconds(2)
-                    .lineToSplineHeading(new Pose2d(startPose.getX() + 2.7 * TILE_SIZE, startPose.getY() - 2.1 * TILE_SIZE, Math.toRadians(180)))
-                    .splineToConstantHeading(new Vector2d(startPose.getX() + 3.3 * TILE_SIZE, startPose.getY() - 1.5 * TILE_SIZE), Math.toRadians(0))
+                    .turn(Math.toRadians(-5))
+                    .waitSeconds(2)
+                    .lineToSplineHeading(new Pose2d(startPose.getX() + 2.7 * TILE_SIZE, startPose.getY() - 2.3 * TILE_SIZE, Math.toRadians(180)))
+                    .splineToConstantHeading(new Vector2d(startPose.getX() + 3.3 * TILE_SIZE, startPose.getY() - 1.2 * TILE_SIZE), Math.toRadians(0))
                     .turn(Math.toRadians(-5))
                     .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                         in_out_take.setInstructions(IntakeOuttake.Instructions.DEPOSIT);
                         in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.RETRACT_VERTICAL);
                     })
                     .waitSeconds(4)
-                    .back(8)
+                    .splineToConstantHeading(new Vector2d(startPose.getX() + 3.3 * TILE_SIZE + 8, startPose.getY() - 1.2 * TILE_SIZE), Math.toRadians(0))
                     .waitSeconds(3)
                     .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                         Claw.open_left_claw();
                         Claw.open_right_claw();
                     })
                     .waitSeconds(1)
-                    .forward(8)
+                    .forward(3)
                     .UNSTABLE_addTemporalMarkerOffset(1, () -> {
                         in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
                         in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.DROP_PIXEL);
@@ -145,46 +131,31 @@ public class BlueFar extends LinearOpMode {
             );
         } else if (position == BlueSpikemarkPipeline.SpikemarkPosition.TWO) {
             drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(startPose)
-                    .lineToSplineHeading(new Pose2d(startPose.getX(), startPose.getY() - (TILE_SIZE), Math.toRadians(135)))
-                    .lineToSplineHeading(new Pose2d(startPose.getX() + 0.3 * TILE_SIZE, startPose.getY() - 1 * (TILE_SIZE), Math.toRadians(135)))
-                    .lineToSplineHeading(new Pose2d(startPose.getX(), startPose.getY() - 1 * (TILE_SIZE), Math.toRadians(135)))
-                    .splineToConstantHeading(new Vector2d(startPose.getX() - 0 * TILE_SIZE, startPose.getY() - 2.1 * (TILE_SIZE)), Math.toRadians(270))
-                    .lineToSplineHeading(new Pose2d(startPose.getX() - 0.1 * TILE_SIZE, startPose.getY() - 2.1 * (TILE_SIZE), Math.toRadians(180)))
+                    .lineToSplineHeading(new Pose2d(startPose.getX(), startPose.getY() - 1.1 * (TILE_SIZE), Math.toRadians(90)))
+                    .splineToConstantHeading(new Vector2d(startPose.getX(), startPose.getY() - 20), Math.toRadians(90))
+                    .lineToSplineHeading(new Pose2d(startPose.getX() - 0.5 * TILE_SIZE, startPose.getY() - 20, Math.toRadians(180)))
+                    .lineToSplineHeading(new Pose2d(startPose.getX() - 0.5 * TILE_SIZE, startPose.getY() - 2.1 * (TILE_SIZE), Math.toRadians(180)))
                     .lineToSplineHeading(new Pose2d(startPose.getX() - 0.95 * TILE_SIZE, startPose.getY() - 2.1 * (TILE_SIZE), Math.toRadians(180)))
-                    .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                        in_out_take.setInstructions(IntakeOuttake.Instructions.STACK_INTAKE);
-                        in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
-                        Intake.intake();
-                    })
                     .waitSeconds(3)
-                    .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                        in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
-                        in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.DROP_PIXEL);
-                    })
-                    .turn(Math.toRadians(-5))
-                    .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                        Intake.outtake();
-                    })
-                    .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                        Intake.stop();
-                    })
                     .waitSeconds(2)
-                    .lineToSplineHeading(new Pose2d(startPose.getX() + 2.7 * TILE_SIZE, startPose.getY() - 2.1 * TILE_SIZE, Math.toRadians(180)))
-                    .splineToConstantHeading(new Vector2d(startPose.getX() + 3.3 * TILE_SIZE, startPose.getY() - 1.5 * TILE_SIZE), Math.toRadians(0))
+                    .turn(Math.toRadians(-5))
+                    .waitSeconds(2)
+                    .lineToSplineHeading(new Pose2d(startPose.getX() + 2.7 * TILE_SIZE, startPose.getY() - 2.3 * TILE_SIZE, Math.toRadians(180)))
+                    .splineToConstantHeading(new Vector2d(startPose.getX() + 3.3 * TILE_SIZE, startPose.getY() - 1.55 * TILE_SIZE), Math.toRadians(0))
                     .turn(Math.toRadians(-5))
                     .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                         in_out_take.setInstructions(IntakeOuttake.Instructions.DEPOSIT);
                         in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.RETRACT_VERTICAL);
                     })
                     .waitSeconds(4)
-                    .back(8)
+                    .splineToConstantHeading(new Vector2d(startPose.getX() + 3.3 * TILE_SIZE + 8, startPose.getY() - 1.55 * TILE_SIZE), Math.toRadians(0))
                     .waitSeconds(3)
                     .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                         Claw.open_left_claw();
                         Claw.open_right_claw();
                     })
                     .waitSeconds(1)
-                    .forward(8)
+                    .forward(3)
                     .UNSTABLE_addTemporalMarkerOffset(1, () -> {
                         in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
                         in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.DROP_PIXEL);
@@ -193,8 +164,35 @@ public class BlueFar extends LinearOpMode {
             );
         } else {
             drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(startPose)
-                    .lineToSplineHeading(new Pose2d(startPose.getX(), startPose.getY() + (TILE_SIZE), Math.toRadians(225)))
-                    .lineToSplineHeading(new Pose2d(startPose.getX() + 0.2 * TILE_SIZE, startPose.getY() + (TILE_SIZE), Math.toRadians(225)))
+                    .lineToSplineHeading(new Pose2d(startPose.getX(), startPose.getY() - (TILE_SIZE), Math.toRadians(45)))
+                    .lineToSplineHeading(new Pose2d(startPose.getX() - 0.2 * TILE_SIZE, startPose.getY() - 1 * (TILE_SIZE), Math.toRadians(45)))
+                    .lineToSplineHeading(new Pose2d(startPose.getX(), startPose.getY() - 1 * (TILE_SIZE), Math.toRadians(45)))
+                    .splineToConstantHeading(new Vector2d(startPose.getX() - 0 * TILE_SIZE, startPose.getY() - 2.1 * (TILE_SIZE)), Math.toRadians(270))
+                    .lineToSplineHeading(new Pose2d(startPose.getX() - 0.85 * TILE_SIZE, startPose.getY() - 2.1 * (TILE_SIZE), Math.toRadians(180)))
+                    .waitSeconds(3)
+                    .waitSeconds(2)
+                    .turn(Math.toRadians(-5))
+                    .waitSeconds(2)
+                    .lineToSplineHeading(new Pose2d(startPose.getX() + 2.7 * TILE_SIZE, startPose.getY() - 2.3 * TILE_SIZE, Math.toRadians(180)))
+                    .splineToConstantHeading(new Vector2d(startPose.getX() + 3.3 * TILE_SIZE, startPose.getY() - 2 * TILE_SIZE), Math.toRadians(0))
+                    .turn(Math.toRadians(-5))
+                    .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                        in_out_take.setInstructions(IntakeOuttake.Instructions.DEPOSIT);
+                        in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.RETRACT_VERTICAL);
+                    })
+                    .waitSeconds(4)
+                    .splineToConstantHeading(new Vector2d(startPose.getX() + 3.3 * TILE_SIZE + 8, startPose.getY() - 1.9 * TILE_SIZE), Math.toRadians(0))
+                    .waitSeconds(3)
+                    .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                        Claw.open_left_claw();
+                        Claw.open_right_claw();
+                    })
+                    .waitSeconds(1)
+                    .forward(3)
+                    .UNSTABLE_addTemporalMarkerOffset(1, () -> {
+                        in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
+                        in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.DROP_PIXEL);
+                    })
                     .build()
             );
         }

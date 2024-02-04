@@ -12,7 +12,7 @@ public class VerticalSlides {
     private static final int retractedBound = 30;
     private static final double ground_position = 30;
     private static final double closed_reset = -800;
-    private static final double low_position = -1200;
+    private static final double low_position = -1000;
     private static final double medium_position = -1600;
     private static final double high_position = -2700;
     public static DcMotorEx verticalSlides;
