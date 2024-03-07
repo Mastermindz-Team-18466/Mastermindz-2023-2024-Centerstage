@@ -7,13 +7,16 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import java.util.concurrent.TimeUnit;
+
 public class Intake {
     public static DcMotorEx intakeMotor;
     public static Servo dropdown;
     public static final double intakeSpeed = 1;
     public static final double outtakeSpeed = -1;
-    public static final double dropdown_up_position = 1;
-    public static final double dropdown_down_position = 0.25;
+    public static final double dropdown_up_position = 0;
+    public static final double dropdown_middle_position = 0.25;
+    public static final double dropdown_down_position = 0.4;
     public static double intake_current_speed = 0;
     public static Double dropdown_current_position = 0.1;
 
@@ -44,6 +47,14 @@ public class Intake {
         if (Math.abs(speed) > 1) speed = -1;
         intake_current_speed = -Math.abs(speed);
     }
+
+    public static void dropdown_single() {
+        dropdown_current_position = dropdown_middle_position;
+    }
+    public static void dropdown_single(double position) {
+        if (position > dropdown_middle_position || position < dropdown_middle_position) position = dropdown_middle_position;
+        dropdown_current_position = position;
+    }
     public static void dropdown_down() {
         dropdown_current_position = dropdown_down_position;
     }
@@ -66,6 +77,14 @@ public class Intake {
     public static void setDropdown() {
         if(dropdown_current_position != null){
             dropdown.setPosition(dropdown_current_position);
+        }
+    }
+
+    public static void pause() {
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

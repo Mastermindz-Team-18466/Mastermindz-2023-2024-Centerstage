@@ -82,54 +82,65 @@ public class TeleOpMode extends LinearOpMode {
             currentGamepad2.copy(gamepad2);
 
             if (state == States.REGULAR) {
-                if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) {
+                if (currentGamepad1.y && !previousGamepad1.y) {
                     in_out_take.setInstructions(IntakeOuttake.Instructions.EXTEND_VERTICAL_FOR_INTAKE);
                     in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
-                    in_out_take.intake.intake();
                 }
 
-                if (currentGamepad2.right_bumper && !previousGamepad2.right_bumper) {
+                if (currentGamepad1.options && !previousGamepad1.options) {
+                    in_out_take.setInstructions(IntakeOuttake.Instructions.OPEN_INTAKE);
+                    in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.SINGLE_PIXEL);
+                }
+
+                if (currentGamepad1.left_trigger > 0.5 && !(previousGamepad1.left_trigger > 0.5)) {
                     in_out_take.intake.outtake();
                 }
 
-                if (currentGamepad2.x && !previousGamepad2.x) {
+                if (currentGamepad1.right_trigger > 0.5 && !(previousGamepad1.right_trigger > 0.5)) {
                     in_out_take.intake.intake();
                 }
 
-                if (currentGamepad2.y && !previousGamepad2.y) {
+                if (currentGamepad1.right_trigger < 0.5 && !(previousGamepad1.right_trigger < 0.5)) {
                     in_out_take.intake.stop();
                 }
 
-                if (currentGamepad2.dpad_up && !(previousGamepad2.dpad_up)) {
+                if (currentGamepad1.left_trigger < 0.5 && !(previousGamepad1.left_trigger < 0.5)) {
+                    in_out_take.intake.stop();
+                }
+
+                if (currentGamepad1.right_bumper && !(previousGamepad1.right_bumper)) {
                     in_out_take.setInstructions(IntakeOuttake.Instructions.OPEN_INTAKE);
                     in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.EXTEND_VERTICAL);
                 }
 
-                if (currentGamepad2.a && !previousGamepad2.a) {
+                if (currentGamepad1.b && !previousGamepad1.b) {
                     in_out_take.setInstructions(IntakeOuttake.Instructions.CLOSED);
                     in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.DROP_PIXEL);
                 }
 
-                if (currentGamepad2.left_trigger > 0.5 && !(previousGamepad2.left_trigger > 0.5)) {
+                if (currentGamepad1.x && !(previousGamepad1.x)) {
                     in_out_take.setInstructions(IntakeOuttake.Instructions.DEPOSIT);
                     in_out_take.setSpecificInstruction(IntakeOuttake.SpecificInstructions.RETRACT_VERTICAL);
                 }
 
-                if (currentGamepad2.right_trigger > 0.5 && !(previousGamepad2.right_trigger > 0.5)) {
-                    in_out_take.claw.open_left_claw();
+                if (currentGamepad1.dpad_left && !(previousGamepad1.dpad_left)) {
                     in_out_take.claw.open_right_claw();
                 }
 
-                if (Math.abs(gamepad2.left_stick_y) >= 0.5 || Math.abs(gamepad2.right_stick_x) >= 0.5) {
-                    in_out_take.vertical_slides.vertical_offset -= gamepad2.left_stick_y * 50;
+                if (currentGamepad1.dpad_right && !(previousGamepad1.dpad_right)) {
+                    in_out_take.claw.open_left_claw();
+                }
+
+                if ((gamepad1.dpad_up)) {
+                    in_out_take.vertical_slides.vertical_offset += 15;
+                }
+
+                if ((gamepad1.dpad_down)) {
+                    in_out_take.vertical_slides.vertical_offset -= 15;
                 }
             }
 
-            if (gamepad1.left_trigger > 0.2) {
-                driver.drive.slowMode = 4.5;
-            } else {
-                driver.drive.slowMode = 1;
-            }
+
 
             if (currentGamepad2.start && !previousGamepad2.start) {
                 state = States.HANG;

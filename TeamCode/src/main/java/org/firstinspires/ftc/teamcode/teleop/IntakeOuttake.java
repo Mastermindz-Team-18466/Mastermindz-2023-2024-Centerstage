@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import android.widget.GridLayout;
 
+import java.util.concurrent.TimeUnit;
+
 public class IntakeOuttake {
     Claw claw;
     DepositHorizontalSlides deposit_horizontal_slides;
@@ -202,9 +204,27 @@ public class IntakeOuttake {
                         }
                     case DROPDOWN_DOWN:
                         if (System.currentTimeMillis() - previous_action > waitTime) {
-                            Intake.dropdown_down();
+                            Intake.dropdown_single();
                         }
                         break;
+
+                    case SINGLE_PIXEL:
+                        Intake.dropdown_down();
+                        Intake.setDropdown();
+                        long previous_time = System.currentTimeMillis();
+                        try {
+                            Thread.sleep(1100);
+                        } catch (InterruptedException e) {
+                            // Handle interruption exception if needed
+                            e.printStackTrace();
+                        }
+                        if (System.currentTimeMillis() - previous_time > 1000) {
+                            Intake.dropdown_single();
+                            Intake.setDropdown();
+                        }
+                        break;
+
+
                 }
                 break;
 
@@ -229,10 +249,15 @@ public class IntakeOuttake {
                     case EXTEND_VERTICAL:
                         vertical_slides.vertical_offset = 0;
                         vertical_slides.go_to_low();
-                        intake.dropdown_down();
+                        intake.dropdown_single();
+                        intake.setDropdown();
                         break;
                 }
                 break;
+
+
+
+
 
             case STACK_INTAKE:
                 switch (specificInstruction) {
@@ -243,6 +268,7 @@ public class IntakeOuttake {
                         break;
                 }
                 break;
+
 
             case DEPOSIT:
                 switch (specificInstruction) {
@@ -325,7 +351,9 @@ public class IntakeOuttake {
         EXTEND_VERTICAL(1000),
         RETRACT_VERTICAL(750),
         OPEN_CLAWS(300),
+        SINGLE_PIXEL(300),
         DROP_PIXEL(300);
+
 
         private final int executionTime;
 

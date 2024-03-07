@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class  DepositHorizontalSlides {
     public static Servo left_deposit_horizontal_slides;
     public static Servo right_deposit_horizontal_slides;
-    public static final double deposit_position = 0.4;
-    public static final double right_intake_position = 0.75;
-    public static final double left_intake_position = 0.7;
+    public static final double deposit_position = 0.5;
+    public static final double right_intake_position = 0.95;
+    public static final double left_intake_position = 0.9;
     static final double INCREMENT = 0.01;
     static final int CYCLE_MS = 50;
     public double TURNING_POINT = 0.85;

@@ -8,10 +8,10 @@ public class Claw {
     public static Servo right_claw;
     public static Servo left_claw_tilt;
     public static Servo right_claw_tilt;
-    public static final double left_claw_open_position = 0.53;
-    public static final double left_claw_close_position = 0;
+    public static final double left_claw_open_position = -0.7;
+    public static final double left_claw_close_position = -3;
     public static final double right_claw_open_position = 0.38;
-    public static final double right_claw_close_position = 0;
+    public static final double right_claw_close_position = -1;
     public static final double left_claw_tilt_intake = 0.278;
     public static final double right_claw_tilt_intake = 0.150;
     public static final double left_claw_tilt_deposit = 0.585;
